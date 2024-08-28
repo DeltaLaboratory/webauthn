@@ -220,7 +220,7 @@ var parseCredentialTests = []parseCredentialTest{
 }
 
 var parseCredentialErrorTests = []parseCredentialErrorTest{
-	{"invalid cbor data", []byte("hello"), "credential: failed to unmarshal: EOF"},
+	{"invalid cbor data", []byte("hello"), "credential: failed to unmarshal: unexpected EOF"},
 	{"incomplete input data", cborMarshal(incompleteKey), "credential: missing ECDSA curve"},
 	{"invalid alg data type", cborMarshal(invalidAlg), "credential: failed to unmarshal: cbor: cannot unmarshal"},
 	{"missing alg", cborMarshal(missingAlg), "webauthn: COSE algorithm 0 is not registered"},
