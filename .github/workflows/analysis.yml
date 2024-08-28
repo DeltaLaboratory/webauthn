@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: 'latest'
+          go-version: 'stable'
       - run: "go test ./..."
   golangci-lint:
     name: "Run GolangCI-Lint Code Analysis"
@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: 'latest'
+          go-version: 'stable'
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
