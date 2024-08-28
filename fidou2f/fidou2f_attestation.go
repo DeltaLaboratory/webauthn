@@ -19,7 +19,6 @@ package fidou2f
 import (
 	"bytes"
 	"crypto/ecdsa"
-	"crypto/elliptic"
 	"crypto/x509"
 	"fmt"
 
@@ -83,7 +82,14 @@ func (attStmt *fidou2fAttestationStatement) Verify(clientDataHash []byte, authnD
 		err = &webauthn.VerificationError{Type: "fido u2f attestation", Field: "credential public key", Msg: "credential public key is not an Elliptic Curve public key over the P-256 curve"}
 		return
 	}
-	credentialPublicKeyX962 := elliptic.Marshal(credentialPublicKey.Curve, credentialPublicKey.X, credentialPublicKey.Y)
+
+	ecdhPublicKey, err := credentialPublicKey.ECDH()
+	if err != nil {
+		err = &webauthn.VerificationError{Type: "fido u2f attestation", Field: "credential public key", Msg: "credential public key is not an Elliptic Curve public key"}
+		return
+	}
+
+	credentialPublicKeyX962 := ecdhPublicKey.Bytes()
 
 	// Let verificationData be the concatenation of (0x00 || rpIdHash || clientDataHash || credentialId || publicKeyU2F)
 	var verificationDataBuffer bytes.Buffer
